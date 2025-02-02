@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<title>Une page</title>
+
+</head>
+
+<body>
+
+	<h1>Hello Thymeleaf</h1>
+	<h2><span th:text="${date}" /></h2>
+	<h2>Bonjour <span th:text="${nom}" /> </h2>
+	<form th:action="@{save}" method="post">
+		nom:<input type="text" name="nom">
+		<input type="submit">
+	</form>
+
+</body>

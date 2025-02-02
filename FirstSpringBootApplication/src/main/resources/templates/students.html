@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Students Management</title>
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <h1>Add New Student</h1>
+  <form th:action="@{save}" method="post">
+    <table>
+      <tr class="form-group">
+        <td>id</td>
+        <td><input type="number" name="id" class="form-control" /></td>
+      </tr>
+      <tr class="form-group">
+        <td>name</td>
+        <td><input type="text" name="name" class="form-control" /></td>
+      </tr>
+      <tr>
+        <td>Choose Gender:</td>
+        <td>
+          <select name="gender">
+            <option value="F">Female</option>
+            <option value="M">Male</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="submit" value="Add" /></td>
+      </tr>
+    </table>
+  </form>
+
+  <hr />
+  <h1>List of Students</h1>
+  <table class="table table-striped">
+
+      <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>Gender</th>
+        <th>delete</th>
+        <th>delete-ajax</th>
+        <th>edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="student:${students}">
+        <td th:text="${student.id}" />
+        <td th:text="${student.name}" />
+        <td>
+          <span th:text="${student.gender == 'M' ? 'Male' : 'Female'}"></span>
+        </td>
+		<td><a th:href="@{/delete/{id}(id=${student.id})}">Supprimer</a></td>
+        <td><a href="#">Implement AJAX delete logic here</a></td>
+		<td>
+		  <form th:action="@{/edit/{id}(id=${student.id})}" method="post">
+		     <input type="hidden" name="id" th:value="${student.id}" />
+		    <input type="text" name="name" th:value="${student.name}" />
+		    <button type="submit">Edit</button>
+		  </form>
+		</td>
+
+	
+      </tr>
+    </tbody>
+  </table>
+
+  <script src="/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

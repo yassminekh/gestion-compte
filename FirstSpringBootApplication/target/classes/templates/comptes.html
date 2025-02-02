@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Comptes</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/js/angular.min.js}"></script> <!-- Inclure AngularJS -->
+</head>
+
+<body>
+    <h1>Add new compte</h1>
+    <form th:action="@{/comptes/save}" method="post">
+        <table>
+            <tr>
+                <td>RIB</td>
+                <td><input type="text" name="rib" /></td>
+            </tr>
+            <tr>
+                <td>Solde</td>
+                <td><input type="text" name="solde" /></td>
+            </tr>
+            <tr>
+                <td>Clients</td>
+                <td>
+                    <select name="clientCins" multiple>
+                        <option th:each="client : ${clients}" th:value="${client.cin}" th:text="${client.nom + ' ' + client.prenom}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="add" class="btn btn-primary" /></td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+
+    <hr />
+    <h1>List of comptes</h1>
+    <div ng-app="compteApp" ng-controller="CompteController">
+        <table class="table table-striped">
+            <tr>
+                <th>RIB</th>
+                <th>Clients</th>
+                <th>Solde</th>
+                <th>Actions</th>
+            </tr>
+            <tr ng-repeat="compte in comptes" id="tr{{compte.rib}}">
+                <td>{{ compte.rib }}</td>
+                <td>
+                    <span ng-repeat="client in compte.clients">
+                        {{ client.nom }} {{ client.prenom }}<br>
+                    </span>
+                </td>
+                <td>{{ compte.solde }}</td>
+                <td>
+                    <button ng-click="deleteCompte(compte.rib)" class="btn btn-danger">Delete</button>
+                    <button ng-click="editCompte(compte.rib)" class="btn btn-warning">Edit</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script>
+        var app = angular.module('compteApp', []);
+        app.controller('CompteController', function ($scope, $http) {
+            // Charger la liste des comptes
+            $http.get('/api/comptes').then(function (response) {
+                $scope.comptes = response.data;
+            });
+
+            // Supprimer un compte via AJAX
+            $scope.deleteCompte = function (rib) {
+                $http.delete('/api/comptes/' + rib).then(function (response) {
+                    // Mettre à jour la liste des comptes après suppression
+                    $scope.comptes = $scope.comptes.filter(function (compte) {
+                        return compte.rib !== rib;
+                    });
+                    alert('Compte supprimé avec succès !');
+                });
+            };
+
+            // Éditer un compte
+            $scope.editCompte = function (rib) {
+                // Rediriger vers la page d'édition
+                window.location.href = '/comptes/edit/' + rib;
+            };
+        });
+    </script>
+</body>
+
+</html>

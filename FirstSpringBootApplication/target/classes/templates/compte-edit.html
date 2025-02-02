@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Une page</title>
+</head>
+
+<body>
+	<h1>Edit compte</h1>
+	<form th:action="@{update}" method="post">
+		<table>
+			<tr>
+				<td>rib</td>
+				<td><input type="text" name="rib" th:value="${compte.rib}" readonly /></td>
+			</tr>
+			<tr>
+				<td>nomClient</td>
+				<td><input type="text" name="nomClient" th:value="${compte.nomClient}" /></td>
+			</tr>
+			<tr>
+				<td>Solde</td>
+				<td><input type="text" name="solde" th:value="${compte.solde}" /></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="update" /></td>
+				<td></td>
+			</tr>
+		</table>
+	</form>
+</body>
+
+</html>
