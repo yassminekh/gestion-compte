@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <span>Ma Banque</span>
+  <nav>
+    <a mat-button routerLink="/comptes">Liste des comptes</a>
+    <a mat-button routerLink="/clients">Liste des clients</a>
+  </nav>
+</mat-toolbar>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<mat-toolbar color="primary" class="footer">
+  <span>&copy; 2024 Ma Banque</span>
+</mat-toolbar>

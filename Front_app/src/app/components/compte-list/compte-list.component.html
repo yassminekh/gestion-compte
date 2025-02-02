@@ -1,0 +1,70 @@
+<div class="container">
+    <h1>Liste des Comptes</h1>
+
+    <div class="form-container">
+        <form (ngSubmit)="addCompte()">
+            <mat-form-field>
+                <input matInput type="number" [(ngModel)]="newCompte.rib" name="rib" placeholder="RIB" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="Rechercher un client..." [formControl]="clientControl"
+                    [matAutocomplete]="auto" />
+            </mat-form-field>
+
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let client of filteredClients | async" [value]="client.nom + ' ' + client.prenom">
+                    {{ client.nom }} {{ client.prenom }}
+                </mat-option>
+            </mat-autocomplete>
+
+            <mat-form-field>
+                <input matInput type="number" [(ngModel)]="newCompte.solde" name="solde" placeholder="Solde" required>
+            </mat-form-field>
+
+
+            <button mat-raised-button color="primary" type="submit">Ajouter</button>
+            <button mat-raised-button color="accent" type="button" (click)="updateCompte()" *ngIf="newCompte.rib"
+                class="button-spacing">Mettre à jour</button>
+            <button mat-raised-button color="warn" type="button" (click)="resetForm()"
+                class="button-spacing">Annuler</button>
+        </form>
+    </div>
+
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="rib">
+            <th mat-header-cell *matHeaderCellDef>RIB</th>
+            <td mat-cell *matCellDef="let compte">{{ compte.rib }}</td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="client">
+            <th mat-header-cell *matHeaderCellDef>Client</th>
+            <td mat-cell *matCellDef="let compte">
+                {{ compte.client?.nom }} {{ compte.client?.prenom }}
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="solde">
+            <th mat-header-cell *matHeaderCellDef>Solde</th>
+            <td mat-cell *matCellDef="let compte">{{ compte.solde }}</td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let compte" style="display: flex; gap: 10px;">
+                <button mat-raised-button color="warn" (click)="deleteCompte(compte.rib)">Supprimer</button>
+                <button mat-raised-button color="accent" (click)="selectCompte(compte)">Éditer</button>
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
